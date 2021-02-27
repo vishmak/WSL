@@ -1,0 +1,36 @@
+Steps to create Arch WSL instance from official sources
+
+1. Download bootstrap image from https://archlinux.org/download/
+2. Use existing wsl instance to extract bootstrap image.
+   sudo tar -xzf archlinux-bootstrap-<insert-version-here>.tar.gz
+3. Navigate to root dir and repack image
+   cd root.x86_64
+   sudo tar -czvf ArchWSL.tar.gz .
+4. Copy image to installation dir
+5. Create wsl instance
+   wsl --import Arch <install directory> <path to image>
+6. Launch Arch WSL instance
+   wsl -d Arch
+7. Initialize pacman
+   pacman-key --init
+   pacman-key --populate archlinux #if failed run rm -r /etc/pacman.d/gnupg
+8. Add a mirror checking https://archlinux.org/mirrorlist/
+   cat > /etc/pacman.d/mirrorlist << EOF #remember to escape $
+9. Update system
+   pacman -Syu
+   pacman -S base base-devel
+10. Localization
+   echo "en_IN.UTF-8 UTF-8" > /etc/locale.gen
+   local-gen
+   echo LANG=en_IN.UTF-8 > /etc/locale.conf
+11. Change root password
+   passwd
+12. Create a user and make it deafult in wsl
+   useradd -m <user>
+   passwd <user>
+   #Add user to sudoers
+   /etc/wsl.conf
+      [user]
+      default = <user>
+   CMD: wsl --terminate Arch #terminate wsl instance from cmd
+   
